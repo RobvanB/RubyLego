@@ -1,46 +1,20 @@
-RvB July 21, 2012
-Ruby installed with rvm
-Gems installed from RubyMine (File -> Settings)  AND from command line
+RubyLego - Control the Lego Mindstorms NXT from Ruby
 
-Links used:
-usb: (gem libusb and ruby-usb)  http://thingylab.com/wiki/ruby_example_with_ruby-usb
+Contains submodules:
+lego_nxt (forked from https://github.com/docwhat/lego_nxt)
+ruby-nxt (forked from https://github.com/zuk/ruby-nxt)
 
-nxt: (gem ruby-nxt)             http://ruby-nxt.rubyforge.org/
+    Copyright (C) 2012  Rob vanBrandenburg (RobvanB@Gmail.com)
 
-Also:
-lego_nxt         "http://github.com/docwhat/lego_nxt"
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-lego-nxt says to use ruby-serialport, but that one won't install on Ruby 1.9.3, so use 'serialport'.
-See http://erik.debill.org/2010/02/07/ruby-serialport-ruby-1-9-1 - very bottom of article
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-I had to modify
-/home/rob/.rvm/gems/ruby-1.9.3-p194@global/gems/ruby-nxt-0.8.1/lib/nxt.rb
-because the file had 2 lines that 'require' the light and ultrasonic sensor, but the
-paths were wrong
-
-The 'gem' statements at the top of the class are required in order to avoid the 'cannot load file' error
-and have the intelisense work - this is likely also related to the fact that the gems need to be
-installed twice (via RM and via command line) and the 2 ruby paths:
-/home/rob/.rvm/gems/ruby-1.9.3-p194@global/gems/
-and
-/home/rob/.rvm/gems/ruby-1.9.3-p194/gems/
-Pretty sure this is RVM related
-
-The line "gem 'libusb'" is commented out because libusb is loaded by lego_nxt, and the versions collide
-
-LEGO_NXT is used to setup the usb connection to the brick
-
-The plan is to use ruby-nxt to send the commands
-
-
-
-Ignore text below:
-I modified the gemspec for lego_nxt because of this error:
-Unable to activate lego_nxt-0.0.2, because libusb-0.2.0 conflicts with libusb (~> 0.1.3) (Gem::LoadError)
-I commented out the dependency on libusb in the gemspec
-/home/rob/.rvm/gems/ruby-1.9.3-p194@global/gems/lego_nxt-0.0.2/lego_nxt.gemspec
-/home/rob/.rvm/gems/ruby-1.9.3-p194/gems/lego_nxt-0.0.2/lego_nxt.gemspec
-
-
-
-This file was modified by JetBrains RubyMine 4.5 for binding GitHub repository
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
