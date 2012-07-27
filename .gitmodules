@@ -1,0 +1,6 @@
+[submodule "ruby-nxt"]
+	path = ruby-nxt
+	url = git@github.com:RobvanB/ruby-nxt.git
+[submodule "lego_nxt"]
+	path = lego_nxt
+	url = git@github.com:RobvanB/lego_nxt.git
