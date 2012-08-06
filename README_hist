@@ -1,4 +1,20 @@
-RvB July 21, 2012
+=======================
+= RvB August 05, 2012 =
+=======================
+* Had problems with gems (again) - Removed RVM, and uninstalled all ruby packages using the Ubuntu package installer
+* Reinstalled rvm and used rvm to install Ruby
+* Installed all gems using the RubyMine gem installer (serialport, libusb, ruby-usb)
+* Autodetect_usb.rb was populating the DEV variable even when no (serial) device was found. Fixed that, this also made
+  the USB detection/connection work in nxt_comm.rb
+* A string comparison in nxt_comm.rb didn't work - I think because of Ruby 1.9.3 - fixed
+* created a "test" class for "lego_nxt" and one for "ruby-nxt"
+
+
+
+
+=====================
+= RvB July 21, 2012 =
+=====================
 Ruby installed with rvm
 Gems installed from RubyMine (File -> Settings)  AND from command line
 

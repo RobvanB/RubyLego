@@ -12,6 +12,8 @@ class RubyNxtSample
   require 'nxt'
   require 'serialport'
 
+  $DEBUG=true
+
   #pp USB.devices          #pretty print
 
   #dev = USB.find_bus(2).find_device(3)
