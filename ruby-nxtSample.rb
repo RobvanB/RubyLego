@@ -13,7 +13,9 @@ class RubyNxtSample
   require 'serialport'
 
   #$DEBUG=true
-  testPart = 'US'
+  #testPart  = 'M'   #Motor
+  testPart = 'US'  #Ultrasonic sensor (nxt 2.0)    Port 4
+  #testPart = 'LS'  #Light Sensor (nxt 2.0)
 
   #pp USB.devices          #pretty print
 
@@ -26,7 +28,10 @@ class RubyNxtSample
     ## Motors ##
     # Run motor A
 
-    nxt.motor_a {|m| m.forward(:degrees => 180)}
+    #nxt.motor_a {|m| m.backward(:degrees => 180)}
+    nxt.motor_a {|m| m.forward(:time => 2, :power => 40)}
+    nxt.motor_a {|m| m.backward(:time => 2, :power => 40)}
+
     #nxt.disconnect
   end
 
@@ -89,6 +94,7 @@ class RubyNxtSample
   end
 
   nxt.disconnect
+  puts 'NXT Disconnected'
 
 rescue
   nxt.disconnect
