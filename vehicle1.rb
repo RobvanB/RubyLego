@@ -70,7 +70,6 @@ class Vehicle1
   sleep 2
   move_bot
 
-
   ## Start moving
   #puts "***Start moving***"
   #nxt.motor_a {|m| m.forward(:power => 40, :brake_on_stop => true)}
