@@ -1,0 +1,71 @@
+=======================
+= RvB August 09, 2012 =
+=======================
+Finally able to make a motor turn and turn an LED on/off.
+Using 'direct mode' for the LED, using the higher level interface for the motor (see ruby-nxtSample.rb)
+I don't think the green/red/blue activation was implemented in the ruby-nxt project yet, as (I think) this was
+ new for NXT 2.0
+When the NTX.new is executed I'm still getting an error - will need to look into that.
+Found very useful info about direct commands here:
+http://code.google.com/p/nxt-python/issues/attachmentText?id=6&aid=-8249402819910847061&name=colorsensor.patch&token=5b17c965e58fc5e6fbee4f28a0369a22
+
+
+=======================
+= RvB August 05, 2012 =
+=======================
+* Had problems with gems (again) - Removed RVM, and uninstalled all ruby packages using the Ubuntu package installer
+* Reinstalled rvm and used rvm to install Ruby
+* Installed all gems using the RubyMine gem installer (serialport, libusb, ruby-usb)
+* Autodetect_usb.rb was populating the DEV variable even when no (serial) device was found. Fixed that, this also made
+  the USB detection/connection work in nxt_comm.rb
+* A string comparison in nxt_comm.rb didn't work - I think because of Ruby 1.9.3 - fixed
+* created a "test" class for "lego_nxt" and one for "ruby-nxt"
+
+=====================
+= RvB July 21, 2012 =
+=====================
+Ruby installed with rvm
+Gems installed from RubyMine (File -> Settings)  AND from command line
+
+Links used:
+usb: (gem libusb and ruby-usb)  http://thingylab.com/wiki/ruby_example_with_ruby-usb
+
+nxt: (gem ruby-nxt)             http://ruby-nxt.rubyforge.org/
+
+Also:
+lego_nxt         "http://github.com/docwhat/lego_nxt"
+
+lego-nxt says to use ruby-serialport, but that one won't install on Ruby 1.9.3, so use 'serialport'.
+See http://erik.debill.org/2010/02/07/ruby-serialport-ruby-1-9-1 - very bottom of article
+
+I had to modify
+/home/rob/.rvm/gems/ruby-1.9.3-p194@global/gems/ruby-nxt-0.8.1/lib/nxt.rb
+because the file had 2 lines that 'require' the light and ultrasonic sensor, but the
+paths were wrong
+
+The 'gem' statements at the top of the class are required in order to avoid the 'cannot load file' error
+and have the intelisense work - this is likely also related to the fact that the gems need to be
+installed twice (via RM and via command line) and the 2 ruby paths:
+/home/rob/.rvm/gems/ruby-1.9.3-p194@global/gems/
+and
+/home/rob/.rvm/gems/ruby-1.9.3-p194/gems/
+Pretty sure this is RVM related
+
+The line "gem 'libusb'" is commented out because libusb is loaded by lego_nxt, and the versions collide
+
+LEGO_NXT is used to setup the usb connection to the brick
+
+The plan is to use ruby-nxt to send the commands
+
+
+
+Ignore text below:
+I modified the gemspec for lego_nxt because of this error:
+Unable to activate lego_nxt-0.0.2, because libusb-0.2.0 conflicts with libusb (~> 0.1.3) (Gem::LoadError)
+I commented out the dependency on libusb in the gemspec
+/home/rob/.rvm/gems/ruby-1.9.3-p194@global/gems/lego_nxt-0.0.2/lego_nxt.gemspec
+/home/rob/.rvm/gems/ruby-1.9.3-p194/gems/lego_nxt-0.0.2/lego_nxt.gemspec
+
+
+
+This file was modified by JetBrains RubyMine 4.5 for binding GitHub repository
