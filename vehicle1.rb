@@ -9,7 +9,6 @@ class Vehicle1
   require 'serialport'
 
   #$DEV = "/dev/ttyS3"
-
   $DEBUG=false
 
   def self.move_bot()
