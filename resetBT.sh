@@ -9,11 +9,11 @@ sudo rfcomm release ${BTDEV}
 # to speed up things we hardcode the address for now
 CLIENTADDR=00:16:53:11:CB:1B
 
-# Set permissions
-sudo chmod 777 /dev/rfcomm0
-
 # Bind the device to the adapter
 sudo rfcomm bind ${BTDEV} ${CLIENTADDR}
+
+# Set permissions
+sudo chmod 777 /dev/rfcomm0
 
 echo "Device:"
 ls -l /dev/rfcomm*

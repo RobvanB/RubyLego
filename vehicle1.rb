@@ -1,9 +1,6 @@
 class Vehicle1
   $:.unshift File.join(File.dirname(__FILE__),"/ruby-nxt/ruby/lib")
 
-  #gem 'ruby-serialport'
-  #gem 'ruby-usb'
-
   require 'usb'
   require 'nxt'
   require 'serialport'
@@ -11,7 +8,13 @@ class Vehicle1
   #$DEV = "/dev/ttyS3"
   $DEBUG=false
 
-  def self.move_bot()
+  GREEN     = 'green'
+  RED       = 'red'
+  STRAIGHT  = 's'
+  LEFT      = 'l'
+  RIGHT     = 'r'
+
+  def self.check_path
     # Check path
     puts "*** Check for obstacles ***"
     d_forward = @us.get_distance
@@ -20,54 +23,79 @@ class Vehicle1
     if (d_forward)
       d_forward_i = Integer(d_forward)
       puts "*** Forward distance: #{d_forward_i.to_s} ***"
+      sleep 0.2
     end
 
-    puts "*** check for drop off ***"
-    @nxt.motor_c {|m| m.forward(:power => 20, :degrees => 3)}
-    sleep 1
+    return d_forward_i
+  end
 
-    d_dropoff = @us.get_distance
-    sleep 0.2
-
-    if (d_dropoff)
-      d_dropoff_i = Integer(d_dropoff)
-      puts "*** Drop Off distance: #{d_dropoff_i.to_s}"
-    end
-
-    # Bring sensor back up
-    @nxt.motor_c {|m| m.backward(:power => 20, :degrees => 5)}
-    sleep 1
-
-    if  (d_forward_i > 20 && d_dropoff_i < 10)
-      puts "*** move ***"
-      @nxt.motor_a {|m| m.forward(:power => 40, :degrees => 360, :brake_on_stop => true)}
-      @nxt.motor_b {|m| m.forward(:power => 40, :degrees => 360, :brake_on_stop => true)}
-      sleep 1
-    else
-      puts "*** object detected ***"
+  def self.move_bot(dir)
+    case dir
+      when 's' #straight ahead!
+        puts "*** move straight ***"
+        @nxt.motor_a {|m| m.forward(:power => 40, :degrees => 360, :brake_on_stop => true)}
+        sleep 0.1
+        @nxt.motor_b {|m| m.forward(:power => 40, :degrees => 360, :brake_on_stop => true)}
+        sleep 2
+      when 'l' #Left
+        puts "*** move left ***"
+        @nxt.motor_a {|m| m.forward(:power => 40, :degrees => 360, :brake_on_stop => true)}
+        sleep 2
+      when 'r' #Right
+        puts "*** move right ***"
+        @nxt.motor_b {|m| m.forward(:power => 40, :degrees => 360, :brake_on_stop => true)}
+        sleep 2
+      else
+        puts "*** Incorrect Command ***"
+        exit
     end
   end
 
-  #nxt =  NXT.new("/dev/rfcomm0") #Bluetooth
-  tmp=1
-  @nxt =  NXT.new()
-  sleep 0.1
+  def self.light(color)
+    case color
+    when GREEN
+        # Turn on Green light
+        puts '***turn on green light***'
+        @nxt.set_input_mode(0x02, 0x0F, 0x00)    # 0x02 = Port 3 (Light Sensor) , 0x0F = Green, 0x00 = Raw mode
+        sleep 0.2
+    when RED
+        # Turn on Red light
+        puts '***turn on red light***'
+        @nxt.set_input_mode(0x02, 0x0E, 0x00)    # 0x02 = Port 3 (Light Sensor) , 0x0E = Red, 0x00 = Raw mode
+        sleep 0.2
+    else
+      puts "Wrong Color"
+    end
+  end
 
-  # Turn on Green light
-  puts '***turn on green light***'
-  @nxt.set_input_mode(0x02, 0x0F, 0x00)    # 0x02 = Port 3 (Light Sensor) , 0x0F = Green, 0x00 = Raw mode
-  sleep 0.2
+  #puts "*** check for drop off ***"
+    #@nxt.motor_c {|m| m.forward(:power => 20, :degrees => 3)}
+    #sleep 1
 
-  ## Ultrasonic Sensor ##
-  puts "***initialize U - sensor***"
-  @us = UltrasonicSensor.new(@nxt)
-  sleep 0.2
+    #d_dropoff = @us.get_distance
+    #sleep 0.2
 
-  puts "*** move ***"
+    #if (d_dropoff)
+    #  d_dropoff_i = Integer(d_dropoff)
+    #  puts "*** Drop Off distance: #{d_dropoff_i.to_s}"
+    #end
 
-  move_bot
-  sleep 2
-  move_bot
+    # Bring sensor back up
+    #@nxt.motor_c {|m| m.backward(:power => 20, :degrees => 5)}
+    #sleep 1
+
+    #if  (d_forward_i > 20 && d_dropoff_i < 10)
+   # if  (d_forward_i > 20)
+
+    #else
+
+     ## puts "*** object detected ***"
+      #return false
+    #end
+  #end
+
+  #sleep 2
+  #move_bot
 
   ## Start moving
   #puts "***Start moving***"
@@ -97,6 +125,31 @@ class Vehicle1
   #end
   #
   #sleep 2
+
+  #nxt =  NXT.new("/dev/rfcomm0") #Bluetooth
+  #tmp=1
+  @nxt =  NXT.new()
+  sleep 0.1
+
+  ## Ultrasonic Sensor ##
+  puts "***initialize U - sensor***"
+  @us = UltrasonicSensor.new(@nxt)
+  sleep 0.2
+
+  puts "*** move ***"
+
+  move_status = true
+  while move_status
+    d = check_path
+    if d < 20
+      light(RED)
+      move_bot(LEFT)
+    else
+      light(GREEN)
+      move_bot(STRAIGHT)
+    end
+    sleep 1
+  end
 
   puts "*** END-STOP ***"
   #nxt.motor_a {|m| m.stop}
